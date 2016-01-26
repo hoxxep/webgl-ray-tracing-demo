@@ -1,3 +1,5 @@
+'use strict';
+
 define(['jquery'], function range($) {
   'use strict';
 
@@ -5,6 +7,7 @@ define(['jquery'], function range($) {
    * Show the text value for our HTML range elements in the label
    * @param e
    */
+
   function showValue(e) {
     var element = $(e.target);
     var parent = element.parent();
@@ -15,5 +18,7 @@ define(['jquery'], function range($) {
 
   ranges.on('change', showValue);
   ranges.on('input', showValue);
-  $.each(ranges, (index, element) => showValue({target: element}));
+  $.each(ranges, function (index, element) {
+    return showValue({ target: element });
+  });
 });
