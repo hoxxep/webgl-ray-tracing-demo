@@ -1,0 +1,24 @@
+{
+  "name": "raytracer",
+  "authors": [
+    "Liam Gray <hoxxep@gmail.com>"
+  ],
+  "description": "JavaScript/WebGL ray tracer",
+  "main": "index.html",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "http://wiringtheworld.com",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.2.0",
+    "semantic": "semantic-ui#~2.1.8",
+    "requirejs": "~2.1.22"
+  }
+}

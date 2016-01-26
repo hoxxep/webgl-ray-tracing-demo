@@ -1,0 +1,101 @@
+---
+---
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WebGL Ray Tracer Demo - Liam Gray</title>
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+</head>
+<body>
+<div id="page" class="ui container">
+    <div class="ui stackable relaxed grid">
+        <div class="row">
+            <!-- canvas image -->
+            <div class="sixteen wide mobile ten wide tablet ten wide computer column">
+                <div id="screen" class="ui segment">
+                    <div class="loading ui active inverted dimmer">
+                        <div class="ui text loader">
+                            Loading...
+                        </div>
+                    </div>
+                    <div class="error ui inverted dimmer">
+                        <div class="content">
+                            <div class="center">
+                                <h3>Error</h3>
+                                <p>Your browser does not support WebGL.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="ui teal ribbon icon label" href="https://github.com/hoxxep"><i class="github icon"></i> WebGL Ray Tracing Demo</a>
+                    <canvas class="render"></canvas>
+                </div>
+                <p><strong>Note:</strong> I have no idea how this page looks in IE.</p>
+            </div>
+
+            <!-- controls column -->
+            <div id="controls" class="six wide column">
+                <div class="profiling ui inverted dimmer">
+                    <div class="ui text loader">
+                        Profiling...
+                    </div>
+                </div>
+
+                <h2>WebGL Ray Tracing</h2>
+                <br>
+                <div class="ui slider range">
+                    <strong>Spheres:</strong> <span class="value"></span>
+                    <input class="spheres setting" type="range" min="1" max="64" step="1" value="27">
+                </div>
+                <br>
+                <div class="ui slider range">
+                    <strong>Reflection Depth:</strong> <span class="value"></span>
+                    <input class="reflections setting" type="range" min="0" max="10" step="1" value="3">
+                </div>
+                <br>
+                <div class="ui slider range">
+                    <strong>Zoom Depth:</strong> <span class="value"></span>
+                    <input class="zoom setting" type="range" min="1" max="10" step="1" value="5">
+                </div>
+                <br>
+                <div class="ui slider checkbox shadows setting" style="display: block;">
+                    <input type="checkbox">
+                    <label><strong>Shadows</strong></label>
+                </div>
+
+                <br>
+
+                <button class="profile ui labeled icon gray button">
+                    <i class="area chart icon"></i>
+                    Profile
+                </button>
+
+                <button class="render ui right labeled icon teal button">
+                    Render
+                    <i class="play icon"></i>
+                </button>
+
+                <span><i class="clock icon"></i></span><span class="render-time"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="center aligned column">
+                <p class="copyright">
+                    Copyright &copy; 2016 - Liam Gray
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script id="fragment-shader" type="x-shader/x-fragment">
+  {% include_relative shaders/fragment.glsl %}
+</script>
+<script id="vertex-shader" type="x-shader/x-vertex">
+    {% include_relative shaders/vertex.glsl %}
+</script>
+
+<script data-main="/js/main" src="/js/require.js"></script>
+</body>
+</html>
