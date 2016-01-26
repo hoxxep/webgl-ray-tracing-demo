@@ -28,6 +28,7 @@ define(['jquery', 'semantic', 'raytracer'], function controls($, ui, RayTracer) 
         throw e;
       } finally {
         this.$screen.children('.loading.dimmer').removeClass('active');
+        this.$screen.children('.loaded.dimmer').addClass('active');
       }
 
       this.$controls.find('button.render').click(this.render.bind(this));
@@ -64,10 +65,10 @@ define(['jquery', 'semantic', 'raytracer'], function controls($, ui, RayTracer) 
           this.$controls.find('button.render').html('Pause <i class="pause icon"></i>');
 
           var $time = this.$controls.find('span.render-time');
+          this.$screen.children('.loaded.dimmer').removeClass('active');
 
           setTimeout(function () {
             try {
-              //var drawing = false;
               _this.interval = true;
               var startTime, endTime;
               startTime = endTime = new Date().getTime();
@@ -84,8 +85,9 @@ define(['jquery', 'semantic', 'raytracer'], function controls($, ui, RayTracer) 
               requestAnimationFrame(step);
             } catch (error) {
               console.error(error);
+              _this.$screen.children('.error.dimmer').addClass('active').find('p').html(error.message);
             }
-          }, 0);
+          }, 1);
         } else {
           clearInterval(this.interval);
           this.interval = null;
