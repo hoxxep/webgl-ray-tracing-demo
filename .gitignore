@@ -1,5 +1,5 @@
 # Jekyll build directory
-/_site/
+# /_site/
 
 # Typical .gitignore parameters
 *.csv
