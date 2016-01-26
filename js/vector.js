@@ -1,3 +1,3 @@
-define([], function vector() {
+"use strict";
 
-});
+define([], function vector() {});

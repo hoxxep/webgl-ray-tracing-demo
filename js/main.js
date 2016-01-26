@@ -1,3 +1,5 @@
+'use strict';
+
 requirejs.config({
   baseUrl: '/js',
   paths: {
@@ -16,8 +18,8 @@ requirejs.config({
     }
   },
   map: {
-    '*': {'jquery': 'semantic'},
-    'semantic': {'jquery': 'jquery'}
+    '*': { 'jquery': 'semantic' },
+    'semantic': { 'jquery': 'jquery' }
   }
 });
 
