@@ -1,5 +1,5 @@
 requirejs.config({
-  baseUrl: '/js',
+  baseUrl: 'js',
   paths: {
     jquery: 'jquery.min',
     semantic: 'semantic.min',
@@ -25,7 +25,7 @@ requirejs(['jquery', 'range', 'controls'], function main($, range, Controls) {
   'use strict';
 
   console.log('Initialising app...');
-  $('.ui.checkbox').checkbox('check');
+  $('.ui.checkbox').checkbox();
 
   new Controls($('#screen'), $('#controls'));
 });
