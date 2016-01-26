@@ -1,0 +1,25 @@
+# Jekyll build directory
+/_site/
+
+# Typical .gitignore parameters
+*.csv
+*.dat
+*.iml
+*.log
+*.out
+*.pid
+*.seed
+*.sublime-*
+*.swo
+*.swp
+*.tgz
+*.xml
+.DS_Store
+.idea
+.project
+.strong-pm
+coverage
+bower_components
+node_modules
+npm-debug.log
+tmp

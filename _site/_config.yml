@@ -1,0 +1,12 @@
+destination: _site
+exclude:
+  - /gulpfile.js
+  - /bower.json
+  - /bower_components/
+  - /package.json
+  - /node_modules/
+  - /js/
+  - /less/
+keep_files:
+  - /css
+  - /js
