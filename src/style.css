@@ -1,0 +1,252 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  color: rgba(0, 0, 0, 0.87);
+  background: #fff;
+}
+
+/* Layout */
+#page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 20px 1rem;
+}
+
+.app-grid {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 1.5rem;
+}
+
+@media (max-width: 768px) {
+  .app-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Screen segment */
+#screen {
+  position: relative;
+  border: 1px solid rgba(34, 36, 38, 0.15);
+  border-radius: 0.25rem;
+  padding: 1rem;
+  background: #fff;
+  box-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.15);
+}
+
+#screen canvas.render {
+  width: 100%;
+  height: 400px;
+  display: block;
+}
+
+/* Overlays (replaces Semantic UI dimmers) */
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.85);
+  z-index: 10;
+  text-align: center;
+  border-radius: 0.25rem;
+}
+
+.overlay.active {
+  display: flex;
+}
+
+.overlay h3 {
+  margin-bottom: 0.5rem;
+}
+
+.overlay p {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+/* Loading spinner */
+.loading.overlay::after {
+  content: '';
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid rgba(0, 0, 0, 0.1);
+  border-top-color: rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+.loading.overlay .loader-text {
+  position: absolute;
+  margin-top: 3.5rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Lucide icons */
+.lucide {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  fill: currentColor;
+  stroke: none;
+}
+
+/* Ribbon label */
+.ribbon-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  position: absolute;
+  left: -0.8em;
+  top: 1.5rem;
+  z-index: 20;
+  background: #00b5ad;
+  color: #fff;
+  padding: 0.4em 0.8em;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-decoration: none;
+  border-radius: 0 0.25rem 0.25rem 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.ribbon-label:hover {
+  background: #009c95;
+  color: #fff;
+}
+
+/* Controls */
+#controls {
+  position: relative;
+}
+
+#controls h2 {
+  margin-bottom: 0.5rem;
+}
+
+/* Range sliders */
+.slider-group {
+  margin-bottom: 1rem;
+}
+
+.slider-group strong {
+  margin-right: 0.25rem;
+}
+
+.slider-group input[type="range"] {
+  width: 100%;
+  -webkit-appearance: none;
+  border: 1px solid #eee;
+  padding: 0;
+  height: 3px;
+  background: #eee;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.slider-group input[type="range"]:focus {
+  background-color: #ddd;
+  border-color: #ddd;
+  outline: none;
+}
+
+.slider-group input[type="range"]::-moz-range-track {
+  background: none;
+  border: 0;
+}
+
+.slider-group input[type="range"]::-moz-focus-outer {
+  border: 0;
+}
+
+.slider-group input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: 0;
+  height: 1.5rem;
+  width: 1.5rem;
+  background: #fff linear-gradient(transparent, rgba(0, 0, 0, 0.05));
+  border-radius: 50%;
+  box-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.15), 0 0 0 1px rgba(34, 36, 38, 0.15) inset;
+}
+
+.slider-group input[type="range"]::-moz-range-thumb {
+  border: 0;
+  height: 1.5rem;
+  width: 1.5rem;
+  background: #fff linear-gradient(transparent, rgba(0, 0, 0, 0.05));
+  border-radius: 50%;
+  box-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.15), 0 0 0 1px rgba(34, 36, 38, 0.15) inset;
+}
+
+/* Checkbox */
+.checkbox-group {
+  margin-bottom: 1rem;
+}
+
+.checkbox-group label {
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-group input[type="checkbox"] {
+  margin-right: 0.35rem;
+  vertical-align: middle;
+}
+
+/* Buttons */
+button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  padding: 0.6em 1.2em;
+  border: none;
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: #e0e1e2;
+  color: rgba(0, 0, 0, 0.6);
+  margin-right: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+button:hover {
+  background: #cacbcd;
+}
+
+button.render {
+  background: #00b5ad;
+  color: #fff;
+}
+
+button.render:hover {
+  background: #009c95;
+}
+
+/* Render time */
+.render-time {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 0.9rem;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.copyright {
+  color: #aaa;
+}

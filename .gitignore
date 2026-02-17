@@ -1,5 +1,8 @@
-# Jekyll build directory
-# /_site/
+# Build output
+dist/
+
+# Dependencies
+node_modules
 
 # Typical .gitignore parameters
 *.csv
@@ -17,9 +20,6 @@
 .DS_Store
 .idea
 .project
-.strong-pm
 coverage
-bower_components
-node_modules
 npm-debug.log
 tmp

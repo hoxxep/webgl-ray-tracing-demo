@@ -1,24 +1,21 @@
 {
-  "name": "raytracer",
+  "name": "webgl-ray-tracing-demo",
   "version": "1.0.0",
   "description": "JavaScript/WebGL ray tracer",
-  "main": "gulpfile.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
   },
-  "author": "Liam Gray <hoxxep@gmail.com>",
+  "author": "Liam Gray",
   "license": "MIT",
-  "dependencies": {
-    "beepbeep": "^1.2.0",
-    "gulp": "^3.9.0",
-    "gulp-jshint": "^2.0.0",
-    "gulp-less": "^3.0.5",
-    "gulp-plumber": "^1.0.1",
-    "jshint": "^2.9.1",
-    "jshint-stylish": "^2.1.0"
-  },
   "devDependencies": {
-    "babel-preset-es2015": "^6.3.13",
-    "gulp-babel": "^6.1.1"
+    "typescript": "~5.9",
+    "vite": "~7.3"
+  },
+  "dependencies": {
+    "lucide": "^0.564.0"
   }
 }
