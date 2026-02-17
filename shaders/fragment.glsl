@@ -17,6 +17,13 @@ const vec3 light1 = vec3(0.33333333, 0.66666667, 0.66666667); // normalize(0.5, 
 bool intersectSphere(vec3 sphereCenter, vec3 rayStart, vec3 rayDirection, out float distance) {
   vec3 rayToSphere = sphereCenter - rayStart;
   float b = dot(rayDirection, rayToSphere);
+
+  // Sphere is behind the ray — skip discriminant and sqrt
+  if (b <= 0.0) {
+    distance = 10000.0;
+    return false;
+  }
+
   float d = b*b - dot(rayToSphere, rayToSphere) + 1.0;
 
   if (d < 0.0) {
@@ -40,13 +47,12 @@ bool intersectSpheres(vec3 rayStart, vec3 rayDirection, out int sphereIndex, out
   float minDistance = -1.0, thisDistance = 0.0;
   vec3 closestCenter;
   for (int i = 0; i < 64; i++) {
-    if (i < numberOfSpheres) {
-      if (intersectSphere(sphereCenters[i], rayStart, rayDirection, thisDistance)) {
-        if (minDistance < 0.0 || thisDistance < minDistance) {
-          minDistance = thisDistance;
-          sphereIndex = i;
-          closestCenter = sphereCenters[i];
-        }
+    if (i >= numberOfSpheres) break;
+    if (intersectSphere(sphereCenters[i], rayStart, rayDirection, thisDistance)) {
+      if (minDistance < 0.0 || thisDistance < minDistance) {
+        minDistance = thisDistance;
+        sphereIndex = i;
+        closestCenter = sphereCenters[i];
       }
     }
   }
@@ -67,13 +73,12 @@ bool intersectSpheresSimple(vec3 rayStart, vec3 rayDirection) {
   // sqrt-free: we only need yes/no, not exact distance.
   // intersection exists with distance>0 iff b>0, rr>1, and discriminant>=0
   for (int i = 0; i < 64; i++) {
-    if (i < numberOfSpheres) {
-      vec3 oc = sphereCenters[i] - rayStart;
-      float b = dot(rayDirection, oc);
-      if (b > 0.0) {
-        float rr = dot(oc, oc);
-        if (rr > 1.0 && b * b - rr + 1.0 >= 0.0) return true;
-      }
+    if (i >= numberOfSpheres) break;
+    vec3 oc = sphereCenters[i] - rayStart;
+    float b = dot(rayDirection, oc);
+    if (b > 0.0) {
+      float rr = dot(oc, oc);
+      if (rr > 1.0 && b * b - rr + 1.0 >= 0.0) return true;
     }
   }
   return false;
@@ -84,7 +89,9 @@ bool intersectSpheresSimple(vec3 rayStart, vec3 rayDirection) {
  */
 float fresnelReflectivity(vec3 normal, vec3 viewer, float r0) {
   float cosTheta = clamp(dot(normal, viewer), 0.0, 1.0);
-  return r0 + (1.0 - r0) * pow(1.0 - cosTheta, 5.0);
+  float x = 1.0 - cosTheta;
+  float x2 = x * x;
+  return r0 + (1.0 - r0) * (x2 * x2 * x);
 }
 
 /**
@@ -166,7 +173,7 @@ void main(void) {
   // Fresnel reflections: C = (1-r)*L_direct + r*C_reflected
   // r varies with angle — low at center (strong color), high at edges (mirror)
   if (intersectWorld(cameraPosition, cameraDirection, position1, normal, reflectedColor)) {
-    float r0 = mix(0.6, 0.04, step(0.99, normal.y));
+    float r0 = mix(0.6, 0.18, step(0.99, normal.y));
     float r = fresnelReflectivity(normal, -cameraDirection, r0);
     color = lightAt(position1, normal, -cameraDirection, reflectedColor);
     colorMax = vec3(r);
@@ -175,11 +182,13 @@ void main(void) {
     bool even = true;
     for (int i=0; i<10; i++) {
       if (i < int(reflections)) {
+        // Skip further bounces when reflection contribution is negligible
+        if (colorMax.r + colorMax.g + colorMax.b < 0.01) break;
         if (even) {
           even = false;
           if (intersectWorld(position1, cameraDirection, position2, normal, reflectedColor)) {
             color += lightAt(position2, normal, -cameraDirection, reflectedColor) * colorMax;
-            r0 = mix(0.6, 0.04, step(0.99, normal.y));
+            r0 = mix(0.6, 0.18, step(0.99, normal.y));
             colorMax *= fresnelReflectivity(normal, -cameraDirection, r0);
             cameraDirection = reflect(cameraDirection, normal);
           } else {
@@ -189,7 +198,7 @@ void main(void) {
           even = true;
           if (intersectWorld(position2, cameraDirection, position1, normal, reflectedColor)) {
             color += lightAt(position1, normal, -cameraDirection, reflectedColor) * colorMax;
-            r0 = mix(0.6, 0.04, step(0.99, normal.y));
+            r0 = mix(0.6, 0.08, step(0.99, normal.y));
             colorMax *= fresnelReflectivity(normal, -cameraDirection, r0);
             cameraDirection = reflect(cameraDirection, normal);
           } else {

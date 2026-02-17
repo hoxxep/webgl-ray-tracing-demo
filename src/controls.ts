@@ -10,6 +10,12 @@ export class Controls {
   private animating: boolean;
   private animationFrameId: number;
 
+  // Cached DOM references to avoid per-frame querySelector
+  private spheresInput: HTMLInputElement;
+  private reflectionsInput: HTMLInputElement;
+  private zoomInput: HTMLInputElement;
+  private shadowsInput: HTMLInputElement;
+
   constructor(screen: HTMLElement, controls: HTMLElement) {
     this.screen = screen;
     this.canvas = screen.querySelector<HTMLCanvasElement>('canvas.render')!;
@@ -17,6 +23,11 @@ export class Controls {
     this.simulationTime = 0.0;
     this.animating = false;
     this.animationFrameId = 0;
+
+    this.spheresInput = this.controlsEl.querySelector<HTMLInputElement>('input.spheres')!;
+    this.reflectionsInput = this.controlsEl.querySelector<HTMLInputElement>('input.reflections')!;
+    this.zoomInput = this.controlsEl.querySelector<HTMLInputElement>('input.zoom')!;
+    this.shadowsInput = this.controlsEl.querySelector<HTMLInputElement>('.shadows input[type="checkbox"]')!;
 
     try {
       this.rayTracer = new RayTracer(this.canvas);
@@ -33,8 +44,7 @@ export class Controls {
     for (const input of this.controlsEl.querySelectorAll<HTMLInputElement>('input.setting')) {
       input.addEventListener('input', () => this.renderIfPaused());
     }
-    this.controlsEl.querySelector('.shadows input[type="checkbox"]')!
-      .addEventListener('change', () => this.renderIfPaused());
+    this.shadowsInput.addEventListener('change', () => this.renderIfPaused());
 
     // Auto-start
     this.renderSingleFrame();
@@ -42,13 +52,7 @@ export class Controls {
 
   private renderSingleFrame(): void {
     try {
-      this.rayTracer.render(
-        this.setting('spheres'),
-        this.setting('reflections'),
-        this.setting('zoom'),
-        this.checkbox('shadows'),
-        this.simulationTime,
-      );
+      this.rayTracer.render(...this.renderParams(), this.simulationTime);
     } catch (error) {
       console.error(error);
       const errorOverlay = this.screen.querySelector('.error.overlay')!;
@@ -81,13 +85,7 @@ export class Controls {
         if (this.animating) {
           startTime = performance.now();
           this.simulationTime += (startTime - endTime) / 100;
-          this.rayTracer.render(
-            this.setting('spheres'),
-            this.setting('reflections'),
-            this.setting('zoom'),
-            this.checkbox('shadows'),
-            this.simulationTime,
-          );
+          this.rayTracer.render(...this.renderParams(), this.simulationTime);
           endTime = performance.now();
           accumTime += endTime - startTime;
           frameCount++;
@@ -112,11 +110,12 @@ export class Controls {
     }
   }
 
-  private setting(name: string): number {
-    return Number(this.controlsEl.querySelector<HTMLInputElement>('input.' + name)!.value);
-  }
-
-  private checkbox(name: string): boolean {
-    return this.controlsEl.querySelector<HTMLInputElement>('.' + name + ' input[type="checkbox"]')!.checked;
+  private renderParams(): [number, number, number, boolean] {
+    return [
+      Number(this.spheresInput.value),
+      Number(this.reflectionsInput.value),
+      Number(this.zoomInput.value),
+      this.shadowsInput.checked,
+    ];
   }
 }
